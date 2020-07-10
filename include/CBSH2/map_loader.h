@@ -18,7 +18,7 @@ class MapLoader
  
 
   MapLoader(){}
-  MapLoader(std::string fname, int rows, int cols, int obstacles);
+  MapLoader(std::vector<std::pair<int, int> > obstacles, std::vector<std::pair<int, int> > starts, std::vector<std::pair<int, int> > goals, int rows, int cols, int obs_l);
   
   inline bool is_blocked (int row, int col) const { return my_map[row * this->cols + col]; }
   inline bool is_blocked (int loc) const { return my_map[loc]; }

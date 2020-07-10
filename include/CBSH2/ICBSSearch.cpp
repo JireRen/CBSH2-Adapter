@@ -954,6 +954,25 @@ void ICBSSearch::printPaths() const
 	}
 }
 
+std::pair<int, std::vector< std::vector< std::pair<int, int> > > > ICBSSearch::getPaths() const
+{
+	std::pair<int, std::vector< std::vector< std::pair<int, int> > > > solution;
+	solution.first = solution_cost;
+
+	std::vector< std::vector< std::pair<int, int> > > my_paths(num_of_agents, std::vector< std::pair<int, int> >());
+
+	for(int i=0; i<num_of_agents; i++){
+		for(size_t t=0; t<paths[i]->size(); t++){
+			int temp_x = paths[i]->at(t).location / search_engines[0]->num_col;
+			int temp_y = paths[i]->at(t).location % search_engines[0]->num_col;
+			my_paths[i].push_back(std::make_pair(temp_x, temp_y));
+		}
+	}
+	
+	solution.second = my_paths;
+	return solution;
+}
+
 
 // adding new nodes to FOCAL (those with min-f-val*f_weight between the old and new LB)
 void ICBSSearch::updateFocalList() 

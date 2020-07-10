@@ -1,7 +1,7 @@
 #include "map_loader.h"
 #include <iostream>
 #include <fstream>
-#include<boost/tokenizer.hpp>
+#include <boost/tokenizer.hpp>
 #include <queue>
 #include <vector>
 
@@ -114,54 +114,42 @@ void MapLoader::generateConnectedRandomGrid(int rows, int cols, int obstacles)
 	}
 }
 
-MapLoader::MapLoader(string fname, int rows = 0, int cols = 0, int obstacles = 0)
+MapLoader::MapLoader(std::vector<std::pair<int, int> > obstacles, std::vector<std::pair<int, int> > starts, std::vector<std::pair<int, int> > goals, int rows = 0, int cols = 0, int obs_l = 0)
 {
-	string line;
-	ifstream myfile (fname.c_str());
-	if (myfile.is_open()) 
-	{
-		getline (myfile,line);
-		char_separator<char> sep(",");
-		tokenizer< char_separator<char> > tok(line, sep);
-		tokenizer< char_separator<char> >::iterator beg=tok.begin();
-		int rows = atoi ( (*beg).c_str() ); // read number of rows
-		beg++;
-		int cols = atoi ( (*beg).c_str() ); // read number of cols
-		bool* my_map= new bool[rows*cols];
-		for (int i=0; i<rows*cols; i++)
-			my_map[i] = false;
-		// read map (and start/goal locations)
-		for (int i=0; i<rows; i++) 
-		{
-			getline (myfile, line);
-			for (int j=0; j<cols; j++)
-			{
-				my_map[cols*i + j] = (line[j] != '.');
-			}
-		}
 
-		myfile.close();
-		this->rows = rows;
-		this->cols = cols;
-		this->my_map = my_map;
-		// initialize moves_offset array
-		moves_offset = new int[MapLoader::MOVE_COUNT];
-		moves_offset[MapLoader::valid_moves_t::WAIT_MOVE] = 0;
-		moves_offset[MapLoader::valid_moves_t::NORTH] = -cols;
-		moves_offset[MapLoader::valid_moves_t::EAST] = 1;
-		moves_offset[MapLoader::valid_moves_t::SOUTH] = cols;
-		moves_offset[MapLoader::valid_moves_t::WEST] = -1;
+	bool* my_map= new bool[rows*cols];
+	for (int i=0; i<rows*cols; i++)
+		my_map[i] = false;
+
+	for(auto i:obstacles){
+		int x = i.first;
+		int y = i.second;
+		my_map[cols*x + y] = true;
 	}
-	else if (rows > 0 && cols > 0 && obstacles >= 0) // generate random grid
-	{
-		generateConnectedRandomGrid(rows, cols, obstacles);
-		saveToFile(fname);
+	/*
+	for(auto i:goals){
+		int x = i.first;
+		int y = i.second;
+		my_map[cols*x + y] = true;
 	}
-	else
-	{
-		cerr << "Map file " << fname << " not found." << std::endl;
-		exit(10);
+	for(auto i:starts){
+		int x = i.first;
+		int y = i.second;
+		my_map[cols*x + y] = true;
 	}
+	*/
+
+	this->rows = rows;
+	this->cols = cols;
+	this->my_map = my_map;
+
+	// initialize moves_offset array
+	moves_offset = new int[MapLoader::MOVE_COUNT];
+	moves_offset[MapLoader::valid_moves_t::WAIT_MOVE] = 0;
+	moves_offset[MapLoader::valid_moves_t::NORTH] = -cols;
+	moves_offset[MapLoader::valid_moves_t::EAST] = 1;
+	moves_offset[MapLoader::valid_moves_t::SOUTH] = cols;
+	moves_offset[MapLoader::valid_moves_t::WEST] = -1;
 }
 
 

@@ -61,6 +61,10 @@ public:
 	// Save results
 	void saveResults(const std::string &fileName, const std::string &instanceName) const;
 	void saveLogs(const std::string &fileName) const;
+	void printPaths() const;
+	std::pair<int, std::vector< std::vector< std::pair<int, int> > > > getPaths() const;
+	void printStrategy() const;
+	void printResults() const;
 
 private:
 
@@ -140,9 +144,7 @@ private:
 	void copyConflictGraph(ICBSNode& child, const ICBSNode& parent);
 
 	// print and save
-	void printPaths() const;
-	void printStrategy() const;
-	void printResults() const;
+	
 	void printConflicts(const ICBSNode &curr) const;
 	
 	bool validateSolution() const;

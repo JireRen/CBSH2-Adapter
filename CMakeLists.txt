@@ -1,23 +1,25 @@
+cmake_minimum_required(VERSION 3.10)
 project(CBSH2)
+set (CMAKE_CXX_STANDARD 17)
 
-cmake_minimum_required (VERSION 2.6)
 
-set(CMAKE_CXX_STANDARD 11)
-SET(CMAKE_CXX_COMPILER "/usr/bin/g++")
+add_subdirectory(library/yaml-cpp)
 
-SET (CMAKE_LINKER  "/usr/bin/ld")
+add_library(cbsh2 INTERFACE)
+target_include_directories(
+  cbsh2
+  INTERFACE 
+  include
+  library/yaml-cpp/include
+ )
 
-SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -g -Wall --std=c++0x")
-
-include_directories("inc")
-file(GLOB SOURCES "*src/*.cpp")
-
+file(GLOB SOURCES "include/CBSH2/*.cpp")
+file(GLOB DIRECTIVES "include/CBSH2/*.h")
 
 
 # Find Boost
-find_package( Boost 1.49.0 REQUIRED COMPONENTS program_options system filesystem)
+find_package( Boost 1.58 REQUIRED COMPONENTS program_options system filesystem)
 include_directories( ${Boost_INCLUDE_DIRS} )
 
-
-add_executable(CBSH2 ${SOURCES} )
-target_link_libraries(CBSH2 ${Boost_LIBRARIES})
+add_executable(CBSH2 example/cbsh_test.cpp ${SOURCES} ${DIRECTIVES})
+target_link_libraries(CBSH2 cbsh2 ${Boost_LIBRARIES} yaml-cpp)
