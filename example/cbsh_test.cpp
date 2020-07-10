@@ -71,28 +71,28 @@ int main(int argc, char** argv)
 	}
 
 	// read the map file and construct its two-dim array
-	MapLoader ml(obstacles, starts, goals, dimx, dimy, obstacles.size());
+	CBSH::MapLoader ml(obstacles, starts, goals, dimx, dimy, obstacles.size());
 
 	// read agents' start and goal locations
-	AgentsLoader al(starts, goals);
+	CBSH::AgentsLoader al(starts, goals);
  
 	srand(vm["seed"].as<int>());
 
-	heuristics_type h;
+	CBSH::heuristics_type h;
 	if (vm["heuristics"].as<string>() == "NONE")
-		h = heuristics_type::NONE;
+		h = CBSH::heuristics_type::NONE;
 	else if (vm["heuristics"].as<string>() == "CG")
-		h = heuristics_type::CG;
+		h = CBSH::heuristics_type::CG;
 	else if (vm["heuristics"].as<string>() == "DG")
-		h = heuristics_type::DG;
+		h = CBSH::heuristics_type::DG;
 	else if (vm["heuristics"].as<string>() == "WDG")
-		h = heuristics_type::WDG;
+		h = CBSH::heuristics_type::WDG;
 	else
 	{
 		std::cout <<"WRONG HEURISTICS NAME!" << std::endl;
 		return -1;
 	}
-	ICBSSearch icbs(ml, al, 1.0, h, vm["PC"].as<bool>(), vm["rectangleReasoning"].as<bool>(), 
+	CBSH::ICBSSearch icbs(ml, al, 1.0, h, vm["PC"].as<bool>(), vm["rectangleReasoning"].as<bool>(), 
 		vm["cutoffTime"].as<int>() * 1000, vm["screen"].as<int>());
 	if (vm.count("MaxMDDs"))
 		icbs.max_num_of_mdds = vm["MaxMDDs"].as<int>();
@@ -110,7 +110,7 @@ int main(int argc, char** argv)
 	
 	if (res) {
 		std::cout << "Planning successful! " << std::endl;
-
+		std::cout<<"Optimal Cost :: "<<solution.first<<std::endl; 
 		std::ofstream out("../example/output_cbs-h.yaml");
 		out << "statistics:" << std::endl;
 		out << "  cost: " << solution.first << std::endl;

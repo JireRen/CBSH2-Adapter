@@ -11,20 +11,20 @@
 #include "map_loader.h"
 
 using namespace std;
-
-class AgentsLoader {
- public:
-  int num_of_agents;
-  vector< pair<int, int> > initial_locations;
-  vector< pair<int, int> > goal_locations;
-  AgentsLoader(std::vector<std::pair<int, int> > starts, std::vector<std::pair<int, int> > goals);
-  AgentsLoader();
-  void addAgent ( int start_row, int start_col, int goal_row, int goal_col );
-  void printAgentsInitGoal () const;
-  void saveToFile(const std::string fname);
-  pair<int, int> agentStartOrGoalAt(int row, int col);
-  void clearLocationFromAgents(int row, int col);
-  ~AgentsLoader();
-};
-
+namespace CBSH{
+  class AgentsLoader {
+   public:
+    int num_of_agents;
+    vector< pair<int, int> > initial_locations;
+    vector< pair<int, int> > goal_locations;
+    AgentsLoader(std::vector<std::pair<int, int> > starts, std::vector<std::pair<int, int> > goals);
+    AgentsLoader();
+    void addAgent ( int start_row, int start_col, int goal_row, int goal_col );
+    void printAgentsInitGoal () const;
+    void saveToFile(const std::string fname);
+    pair<int, int> agentStartOrGoalAt(int row, int col);
+    void clearLocationFromAgents(int row, int col);
+    ~AgentsLoader();
+  };
+}
 #endif
