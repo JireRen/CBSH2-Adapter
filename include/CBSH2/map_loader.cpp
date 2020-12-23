@@ -117,38 +117,33 @@ namespace CBSH{
 	MapLoader::MapLoader(std::vector<std::pair<int, int> > obstacles, std::vector<std::pair<int, int> > starts, std::vector<std::pair<int, int> > goals, int rows = 0, int cols = 0, int obs_l = 0)
 	{
 
-		bool* my_map= new bool[rows*cols];
-		for (int i=0; i<rows*cols; i++)
+		this->rows = rows+2;
+		this->cols = cols+2;
+		my_map = new bool[this->rows*this->cols];
+		for (int i=0; i<this->rows*this->cols; i++)
 			my_map[i] = false;
+		for(int i=0; i<this->rows; i++){
+			my_map[this->cols*i+0] = true;
+			my_map[this->cols*i + this->cols-1] = true;
+		}
+		for(int i=0; i<this->cols; i++){
+			my_map[this->cols*0 + i] = true;
+			my_map[this->cols*(this->rows-1) + i] = true;
+		}
+		for(int i=0; i<obstacles.size(); i++){
+			int x = obstacles[i].first+1;
+			int y = obstacles[i].second+1;
+			my_map[x*this->cols + y] = true;
+		}
 
-		for(auto i:obstacles){
-			int x = i.first;
-			int y = i.second;
-			my_map[cols*x + y] = true;
-		}
-		/*
-		for(auto i:goals){
-			int x = i.first;
-			int y = i.second;
-			my_map[cols*x + y] = true;
-		}
-		for(auto i:starts){
-			int x = i.first;
-			int y = i.second;
-			my_map[cols*x + y] = true;
-		}
-		*/
-
-		this->rows = rows;
-		this->cols = cols;
 		this->my_map = my_map;
 
 		// initialize moves_offset array
 		moves_offset = new int[MapLoader::MOVE_COUNT];
 		moves_offset[MapLoader::valid_moves_t::WAIT_MOVE] = 0;
-		moves_offset[MapLoader::valid_moves_t::NORTH] = -cols;
+		moves_offset[MapLoader::valid_moves_t::NORTH] = -this->cols;
 		moves_offset[MapLoader::valid_moves_t::EAST] = 1;
-		moves_offset[MapLoader::valid_moves_t::SOUTH] = cols;
+		moves_offset[MapLoader::valid_moves_t::SOUTH] = this->cols;
 		moves_offset[MapLoader::valid_moves_t::WEST] = -1;
 	}
 

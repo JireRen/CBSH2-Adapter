@@ -24,6 +24,10 @@ namespace CBSH{
   {
 
   	this->num_of_agents = starts.size();
+    for(int i=0; i<starts.size(); i++){
+      starts[i] = std::make_pair(starts[i].first+1, starts[i].second+1);
+      goals[i] = std::make_pair(goals[i].first+1, goals[i].second+1);
+    }
   	this->initial_locations = starts;
   	this->goal_locations = goals;
   }

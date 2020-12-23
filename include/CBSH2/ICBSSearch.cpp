@@ -967,7 +967,7 @@ namespace CBSH{
 			for(size_t t=0; t<paths[i]->size(); t++){
 				int temp_x = paths[i]->at(t).location / search_engines[0]->num_col;
 				int temp_y = paths[i]->at(t).location % search_engines[0]->num_col;
-				my_paths[i].push_back(std::make_pair(temp_x, temp_y));
+				my_paths[i].push_back(std::make_pair(temp_x-1, temp_y-1));
 			}
 		}
 		
