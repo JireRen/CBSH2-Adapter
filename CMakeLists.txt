@@ -10,7 +10,7 @@ target_include_directories(
   cbsh2
   INTERFACE 
   include
-  library/yaml-cpp/include
+  #library/yaml-cpp/include
  )
 
 file(GLOB SOURCES "include/CBSH2/*.cpp")
