@@ -3,7 +3,7 @@ project(CBSH2)
 set (CMAKE_CXX_STANDARD 17)
 
 
-add_subdirectory(library/yaml-cpp)
+#add_subdirectory(library/yaml-cpp)
 
 add_library(cbsh2 INTERFACE)
 target_include_directories(
